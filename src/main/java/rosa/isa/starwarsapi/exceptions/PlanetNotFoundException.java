@@ -1,8 +1,5 @@
 package rosa.isa.starwarsapi.exceptions;
 
-import lombok.Data;
-
-@Data
 public class PlanetNotFoundException extends RuntimeException {
 
     public PlanetNotFoundException(String message) {

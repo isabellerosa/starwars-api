@@ -1,8 +1,5 @@
 package rosa.isa.starwarsapi.exceptions;
 
-import lombok.NoArgsConstructor;
-
-@NoArgsConstructor
 public class PlanetAlreadyExistsException extends RuntimeException {
 
     public PlanetAlreadyExistsException(String message) {

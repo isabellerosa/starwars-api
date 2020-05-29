@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import rosa.isa.starwarsapi.exceptions.PlanetAlreadyExistsException;
+import rosa.isa.starwarsapi.exceptions.PlanetNotFoundException;
 import rosa.isa.starwarsapi.models.Planet;
 import rosa.isa.starwarsapi.repositories.PlanetRepository;
 
@@ -12,7 +13,7 @@ import java.util.List;
 @Service
 public class PlanetServiceImpl implements PlanetService {
 
-    private PlanetRepository planetRepository;
+    private final PlanetRepository planetRepository;
 
     @Autowired
     public PlanetServiceImpl(PlanetRepository planetRepository) {
@@ -47,6 +48,9 @@ public class PlanetServiceImpl implements PlanetService {
 
     @Override
     public Planet deleteById(String id) {
-        return null;
+        if (planetRepository.findById(id) == null)
+            throw new PlanetNotFoundException(String.format("No planet found for id %s", id));
+
+        return planetRepository.deleteById(id);
     }
 }

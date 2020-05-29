@@ -42,4 +42,10 @@ public class PlanetController {
         log.debug(String.format("Listing %d planets at page %d", size, page));
         return planetService.findAll(--page, size);
     }
+
+    @DeleteMapping("/{id}")
+    public void deletePlanet(@PathVariable("id") String planetId) {
+        log.debug(String.format("Deleting planet with id %s", planetId));
+        planetService.deleteById(planetId);
+    }
 }

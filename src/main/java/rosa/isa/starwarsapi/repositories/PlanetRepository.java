@@ -10,7 +10,11 @@ import rosa.isa.starwarsapi.models.Planet;
 public interface PlanetRepository extends MongoRepository<Planet, Integer> {
     Planet save(Planet planet);
 
+    Planet findById(String id);
+
     Planet findByName(String name);
 
     Page<Planet> findAll(Pageable pageable);
+
+    Planet deleteById(String id);
 }

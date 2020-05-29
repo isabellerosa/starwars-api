@@ -9,6 +9,7 @@ import rosa.isa.starwarsapi.models.Planet;
 import rosa.isa.starwarsapi.repositories.PlanetRepository;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class PlanetServiceImpl implements PlanetService {
@@ -22,7 +23,7 @@ public class PlanetServiceImpl implements PlanetService {
 
     @Override
     public Planet save(Planet planet) {
-        if (planetRepository.findByName(planet.getName()) != null)
+        if (Objects.nonNull(planetRepository.findByName(planet.getName())))
             throw new PlanetAlreadyExistsException(
                     String.format("Already exists a planet registed with the name %s", planet.getName())
             );
@@ -32,7 +33,12 @@ public class PlanetServiceImpl implements PlanetService {
 
     @Override
     public Planet findById(String id) {
-        return null;
+        var planet = planetRepository.findById(id);
+
+        if (Objects.isNull(planet))
+            throw new PlanetNotFoundException(String.format("No planet found for id: %s", id));
+
+        return planet;
     }
 
     @Override
@@ -48,7 +54,7 @@ public class PlanetServiceImpl implements PlanetService {
 
     @Override
     public Planet deleteById(String id) {
-        if (planetRepository.findById(id) == null)
+        if (Objects.isNull(planetRepository.findById(id)))
             throw new PlanetNotFoundException(String.format("No planet found for id %s", id));
 
         return planetRepository.deleteById(id);

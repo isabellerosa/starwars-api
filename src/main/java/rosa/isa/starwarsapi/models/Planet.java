@@ -2,6 +2,7 @@ package rosa.isa.starwarsapi.models;
 
 import lombok.Data;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.ReadOnlyProperty;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Data
@@ -12,4 +13,7 @@ public class Planet {
     private String name;
     private String climate;
     private String terrain;
+
+    @ReadOnlyProperty
+    private Integer filmApparitions;
 }

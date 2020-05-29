@@ -10,15 +10,18 @@ import rosa.isa.starwarsapi.repositories.PlanetRepository;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 public class PlanetServiceImpl implements PlanetService {
 
     private final PlanetRepository planetRepository;
+    private final StarWarsExternalService starWarsExternalService;
 
     @Autowired
-    public PlanetServiceImpl(PlanetRepository planetRepository) {
+    public PlanetServiceImpl(PlanetRepository planetRepository, StarWarsExternalService starWarsExternalService) {
         this.planetRepository = planetRepository;
+        this.starWarsExternalService = starWarsExternalService;
     }
 
     @Override
@@ -38,7 +41,7 @@ public class PlanetServiceImpl implements PlanetService {
         if (Objects.isNull(planet))
             throw new PlanetNotFoundException(String.format("No planet found for id: %s", id));
 
-        return planet;
+        return this.setFilmApparitions(planet);
     }
 
     @Override
@@ -49,7 +52,17 @@ public class PlanetServiceImpl implements PlanetService {
     @Override
     public List<Planet> findAll(int page, int size) {
         var pageSheet = PageRequest.of(page, size);
-        return planetRepository.findAll(pageSheet).getContent();
+        return planetRepository.findAll(pageSheet)
+                .getContent()
+                .parallelStream().map(this::setFilmApparitions)
+                .collect(Collectors.toList());
+    }
+
+    private Planet setFilmApparitions(Planet planet) {
+        var apparitions = starWarsExternalService.getFilmApparitionsCount(planet.getName());
+        planet.setFilmApparitions(apparitions);
+
+        return planet;
     }
 
     @Override

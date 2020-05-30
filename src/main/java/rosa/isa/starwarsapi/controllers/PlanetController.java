@@ -36,13 +36,13 @@ public class PlanetController {
     }
 
     @GetMapping("/{id}")
-    public Planet findPlanet(@PathVariable("id") String planetId) {
+    public Planet getPlanet(@PathVariable("id") String planetId) {
         log.debug(String.format("Searching planet with id %s", planetId));
         return planetService.findById(planetId);
     }
 
     @GetMapping
-    public List<Planet> listPlanets(
+    public List<Planet> getPlanets(
             @RequestParam(name = "page", defaultValue = "1") int page,
             @RequestParam(name = "size", defaultValue = "10") int size,
             @RequestParam(name = "name", required = false) String name) {

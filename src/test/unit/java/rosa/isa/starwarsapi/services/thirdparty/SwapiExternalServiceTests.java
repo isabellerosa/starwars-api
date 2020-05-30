@@ -23,7 +23,7 @@ public class SwapiExternalServiceTests {
     private SwapiService swapiService;
 
     @Test
-    void getApparitionsCount_returnsZero_whenPlanetUnregistered() {
+    void getApparitionsCount_whenPlanetUnregistered_thenReturnsZero() {
         SwapiResponse swapiResponse = Fixtures.getSwapiPlanets();
 
         when(swapiService.getPlanetsByName(anyString())).thenReturn(swapiResponse);
@@ -36,7 +36,7 @@ public class SwapiExternalServiceTests {
     }
 
     @Test
-    void getApparitionsCount_ReturnsApparitions_whenPlanetRegistered() {
+    void getApparitionsCount_whenPlanetRegistered_thenReturnsApparitionsCount() {
         SwapiResponse swapiResponse = Fixtures.getSwapiPlanets();
 
         when(swapiService.getPlanetsByName(anyString())).thenReturn(swapiResponse);
@@ -49,7 +49,7 @@ public class SwapiExternalServiceTests {
     }
 
     @Test
-    void getApparitionsCount_throwsStarWarsExternalServiceException_whenAnyExceptionOccurs() {
+    void getApparitionsCount_whenAnyExceptionOccurs_thenThrowsStarWarsExternalServiceException() {
         when(swapiService.getPlanetsByName(anyString())).thenThrow(RetryableException.class);
 
         assertThrows(StarWarsExternalServiceException.class, () -> swapiExternalService.getFilmApparitionsCount("Kamino"));

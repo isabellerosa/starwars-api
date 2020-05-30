@@ -31,7 +31,7 @@ public class PlanetServiceImplTests {
     PlanetServiceImpl planetService;
 
     @Test
-    public void save_returnsSavedPlanet_whenNoPlanetWithName() {
+    public void save_whenNoPlanetWithName_thenReturnsSavedPlanet() {
         var registeredPlanet = Fixtures.getPlanet();
 
         when(planetRepository.findByName(anyString())).thenReturn(null);
@@ -54,7 +54,7 @@ public class PlanetServiceImplTests {
     }
 
     @Test
-    public void save_throwsPlanetAlreadyExists_whenExistsPlanetWithName() {
+    public void save_whenExistsPlanetWithName_thenThrowsPlanetAlreadyExists() {
         var registeredPlanet = Fixtures.getPlanet();
 
         when(planetRepository.findByName(anyString())).thenReturn(registeredPlanet);
@@ -71,7 +71,7 @@ public class PlanetServiceImplTests {
     }
 
     @Test
-    public void findById_returnsPlanet_WhenExistsPlanetWithId() {
+    public void findById_whenExistsPlanetWithId_thenReturnsPlanet() {
         var registeredPlanet = Fixtures.getPlanet();
 
         when(planetRepository.findById(anyString())).thenReturn(registeredPlanet);
@@ -88,7 +88,7 @@ public class PlanetServiceImplTests {
     }
 
     @Test
-    public void findById_throwsPlanetNotFound_WhenNoPlanetFoundWithId() {
+    public void findById_whenNoPlanetFoundWithId_thenThrowsPlanetNotFound() {
         when(planetRepository.findById(anyString())).thenReturn(null);
 
         assertThrows(PlanetNotFoundException.class, () -> planetService.findById("41D3r44N"));
@@ -98,7 +98,7 @@ public class PlanetServiceImplTests {
     }
 
     @Test
-    public void findAll_returnsPlanets_whenNoNameProvided() {
+    public void findAll_whenNoNameProvided_thenReturnsPlanets() {
         var registeredPlanets = Fixtures.getPlanets();
 
         Page<Planet> planetsPage = new PageImpl<>(registeredPlanets);
@@ -139,7 +139,7 @@ public class PlanetServiceImplTests {
     }
 
     @Test
-    public void findAll_returnsPlanets_whenNameProvided() {
+    public void findAll_whenNameProvided_thenReturnsPlanets() {
         var registeredPlanets = Fixtures.getPlanetsWithMatchingLetters();
         Page<Planet> planetsPage = new PageImpl<>(registeredPlanets);
 
@@ -171,7 +171,7 @@ public class PlanetServiceImplTests {
     }
 
     @Test
-    public void deleteById_returnsDeletedPlanet_whenFindsById() {
+    public void deleteById_whenFindsById_thenReturnsDeletedPlanet() {
         var registeredPlanet = Fixtures.getPlanet();
 
         when(planetRepository.findById(anyString())).thenReturn(registeredPlanet);
@@ -189,7 +189,7 @@ public class PlanetServiceImplTests {
     }
 
     @Test
-    public void deleteById_throwsPlanetNotFound_whenNoPlanetFoundWithId() {
+    public void deleteById_whenNoPlanetFoundWithId_thenThrowsPlanetNotFound() {
         when(planetRepository.findById(anyString())).thenReturn(null);
 
         assertThrows(PlanetNotFoundException.class, () -> planetService.deleteById("41D3r44N"));

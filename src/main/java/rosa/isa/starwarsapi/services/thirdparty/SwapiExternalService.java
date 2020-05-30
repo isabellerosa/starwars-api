@@ -1,4 +1,4 @@
-package rosa.isa.starwarsapi.services;
+package rosa.isa.starwarsapi.services.thirdparty;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

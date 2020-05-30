@@ -8,6 +8,7 @@ import rosa.isa.starwarsapi.exceptions.PlanetAlreadyExistsException;
 import rosa.isa.starwarsapi.exceptions.PlanetNotFoundException;
 import rosa.isa.starwarsapi.models.Planet;
 import rosa.isa.starwarsapi.repositories.PlanetRepository;
+import rosa.isa.starwarsapi.services.thirdparty.StarWarsExternalService;
 
 import java.util.List;
 import java.util.Objects;

@@ -9,9 +9,7 @@ public interface PlanetService {
 
     Planet findById(String id);
 
-    Planet findByName(String name);
-
-    List<Planet> findAll(int page, int size);
+    List<Planet> findAll(int page, int size, String name);
 
     Planet deleteById(String id);
 }

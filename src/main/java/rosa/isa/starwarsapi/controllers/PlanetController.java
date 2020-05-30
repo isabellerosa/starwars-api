@@ -44,9 +44,10 @@ public class PlanetController {
     @GetMapping
     public List<Planet> listPlanets(
             @RequestParam(name = "page", defaultValue = "1") int page,
-            @RequestParam(name = "size", defaultValue = "10") int size) {
+            @RequestParam(name = "size", defaultValue = "10") int size,
+            @RequestParam(name = "name", required = false) String name) {
         log.debug(String.format("Listing %d planets at page %d", size, page));
-        return planetService.findAll(--page, size);
+        return planetService.findAll(--page, size, name);
     }
 
     @DeleteMapping("/{id}")

@@ -16,5 +16,7 @@ public interface PlanetRepository extends MongoRepository<Planet, Integer> {
 
     Page<Planet> findAll(Pageable pageable);
 
+    Page<Planet> findAllByNameContainingIgnoreCase(Pageable pageable, String name);
+
     Planet deleteById(String id);
 }

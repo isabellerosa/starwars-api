@@ -2,6 +2,7 @@ package rosa.isa.starwarsapi.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import rosa.isa.starwarsapi.exceptions.PlanetAlreadyExistsException;
 import rosa.isa.starwarsapi.exceptions.PlanetNotFoundException;
@@ -45,17 +46,19 @@ public class PlanetServiceImpl implements PlanetService {
     }
 
     @Override
-    public Planet findByName(String name) {
-        return null;
+    public List<Planet> findAll(int page, int size, String name) {
+        var pageSheet = PageRequest.of(page, size, Sort.by("name"));
+        var planets = Objects.isNull(name) ? findAll(pageSheet) : findAllWithName(pageSheet, name);
+
+        return planets.parallelStream().map(this::setFilmApparitions).collect(Collectors.toList());
     }
 
-    @Override
-    public List<Planet> findAll(int page, int size) {
-        var pageSheet = PageRequest.of(page, size);
-        return planetRepository.findAll(pageSheet)
-                .getContent()
-                .parallelStream().map(this::setFilmApparitions)
-                .collect(Collectors.toList());
+    private List<Planet> findAll(PageRequest page) {
+        return planetRepository.findAll(page).getContent();
+    }
+
+    private List<Planet> findAllWithName(PageRequest page, String name) {
+        return planetRepository.findAllByNameContainingIgnoreCase(page, name).getContent();
     }
 
     private Planet setFilmApparitions(Planet planet) {

@@ -10,12 +10,12 @@ import java.util.NoSuchElementException;
 
 @Slf4j
 @Service
-public class SwapiExternalService implements StarWarsExternalService {
+public class SwapiExternalServiceImpl implements StarWarsExternalService {
 
     private final SwapiService swapiService;
 
     @Autowired
-    public SwapiExternalService(SwapiService swapiService) {
+    public SwapiExternalServiceImpl(SwapiService swapiService) {
         this.swapiService = swapiService;
     }
 

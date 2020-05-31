@@ -16,9 +16,9 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class SwapiExternalServiceTests {
+public class SwapiExternalServiceImplTests {
     @InjectMocks
-    private SwapiExternalService swapiExternalService;
+    private SwapiExternalServiceImpl swapiExternalServiceImpl;
     @Mock
     private SwapiService swapiService;
 
@@ -28,7 +28,7 @@ public class SwapiExternalServiceTests {
 
         when(swapiService.getPlanetsByName(anyString())).thenReturn(swapiResponse);
 
-        int apparitions = swapiExternalService.getFilmApparitionsCount("Ka");
+        int apparitions = swapiExternalServiceImpl.getFilmApparitionsCount("Ka");
 
         assertEquals(0, apparitions);
 
@@ -41,7 +41,7 @@ public class SwapiExternalServiceTests {
 
         when(swapiService.getPlanetsByName(anyString())).thenReturn(swapiResponse);
 
-        int apparitions = swapiExternalService.getFilmApparitionsCount("Kamino");
+        int apparitions = swapiExternalServiceImpl.getFilmApparitionsCount("Kamino");
 
         assertEquals(1, apparitions);
 
@@ -52,7 +52,7 @@ public class SwapiExternalServiceTests {
     void getApparitionsCount_whenAnyExceptionOccurs_thenThrowsStarWarsExternalServiceException() {
         when(swapiService.getPlanetsByName(anyString())).thenThrow(RetryableException.class);
 
-        assertThrows(StarWarsExternalServiceException.class, () -> swapiExternalService.getFilmApparitionsCount("Kamino"));
+        assertThrows(StarWarsExternalServiceException.class, () -> swapiExternalServiceImpl.getFilmApparitionsCount("Kamino"));
     }
 
 }

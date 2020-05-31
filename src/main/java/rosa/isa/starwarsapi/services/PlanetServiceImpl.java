@@ -30,7 +30,7 @@ public class PlanetServiceImpl implements PlanetService {
     public Planet save(Planet planet) {
         if (Objects.nonNull(planetRepository.findByName(planet.getName())))
             throw new PlanetAlreadyExistsException(
-                    String.format("Already exists a planet registed with the name %s", planet.getName())
+                    String.format("Already exists a planet registered with the name %s", planet.getName())
             );
 
         return planetRepository.save(planet);

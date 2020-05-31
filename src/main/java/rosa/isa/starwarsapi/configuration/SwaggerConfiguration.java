@@ -20,7 +20,7 @@ public class SwaggerConfiguration {
     }
 
     @Bean
-    public OpenAPI springShopOpenAPI() {
+    public OpenAPI springOpenAPI() {
         return new OpenAPI()
                 .info(buildSwaggerInfo());
     }

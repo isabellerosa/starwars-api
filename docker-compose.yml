@@ -1,0 +1,29 @@
+version: "3.2"
+services:
+  starwars-api:
+    depends_on:
+      - starwars-mongo-db
+    image: isabellerosa/starwars-api
+    ports:
+      - 8000:8080
+    env_file:
+      - .env
+    networks:
+      - starwars-network
+
+  starwars-mongo-db:
+    image: mongo:latest
+    ports:
+      - 27017:27017
+    environment:
+      - MONGO_INITDB_DATABASE=starwars
+    volumes:
+      - starwars-vol:/etc/mongo
+    networks:
+      - starwars-network
+
+volumes:
+  starwars-vol:
+
+networks:
+  starwars-network:

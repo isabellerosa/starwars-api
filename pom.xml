@@ -118,7 +118,7 @@
 						</goals>
 						<configuration>
 							<sources>
-								<source>src/test/unit/java</source>
+								<source>src/test/unit</source>
 							</sources>
 						</configuration>
 					</execution>
@@ -129,7 +129,7 @@
 						</goals>
 						<configuration>
 							<sources>
-								<source>src/test/e2e/java</source>
+								<source>src/test/e2e</source>
 							</sources>
 						</configuration>
 					</execution>

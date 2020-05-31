@@ -26,7 +26,7 @@ public class SwaggerConfigurationTests {
     private SwaggerConfiguration swaggerConfiguration;
 
     @Test
-    public void swagger_configuration_returnOpenApiObject() {
+    public void springOpenAPI_whenCorrectInfo_thenReturnOpenApi() {
         var openApiMock = Fixtures.getOpenAPISwaggerConfig();
 
         var openApiInfo = new Info();

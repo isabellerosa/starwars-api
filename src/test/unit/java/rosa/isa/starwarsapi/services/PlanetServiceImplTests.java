@@ -38,19 +38,15 @@ public class PlanetServiceImplTests {
         when(planetRepository.findByName(anyString())).thenReturn(null);
         when(planetRepository.save(any(Planet.class))).thenReturn(registeredPlanet);
 
-        var alderaan = new Planet();
-        alderaan.setName("Alderaan");
-        alderaan.setClimate("temperate");
-        alderaan.setTerrain("grasslands, mountains");
+        var expectedPlanet = Fixtures.getPlanet();
+        var planet = Fixtures.getPlanet();
 
-        var savedPlanet = planetService.save(alderaan);
+        var savedPlanet = planetService.save(planet);
 
-        assertEquals(alderaan.getName(), savedPlanet.getName());
-        assertEquals(alderaan.getClimate(), savedPlanet.getClimate());
-        assertEquals(alderaan.getTerrain(), savedPlanet.getTerrain());
+        assertEquals(expectedPlanet, savedPlanet);
         assertNotNull(savedPlanet.getId());
 
-        verify(planetRepository, times(1)).findByName("Alderaan");
+        verify(planetRepository, times(1)).findByName(planet.getName());
         verify(planetRepository, times(1)).save(any(Planet.class));
     }
 
@@ -60,14 +56,11 @@ public class PlanetServiceImplTests {
 
         when(planetRepository.findByName(anyString())).thenReturn(registeredPlanet);
 
-        var newPlanet = new Planet();
-        newPlanet.setName("Alderaan");
-        newPlanet.setClimate("temperate");
-        newPlanet.setTerrain("grasslands, mountains");
+        var planet = Fixtures.getPlanet();
 
-        assertThrows(PlanetAlreadyExistsException.class, () -> planetService.save(newPlanet));
+        assertThrows(PlanetAlreadyExistsException.class, () -> planetService.save(planet));
 
-        verify(planetRepository, times(1)).findByName("Alderaan");
+        verify(planetRepository, times(1)).findByName(planet.getName());
         verify(planetRepository, never()).save(any(Planet.class));
     }
 
@@ -77,15 +70,15 @@ public class PlanetServiceImplTests {
 
         when(planetRepository.findById(anyString())).thenReturn(registeredPlanet);
         when(starWarsServiceAgent.getFilmApparitionsCount(anyString())).thenReturn(2);
+
+        var expectedPlanet = Fixtures.getPlanetWithFilmApparitions();
+
         var planet = planetService.findById("41D3r44N");
 
-        assertEquals("41D3r44N", planet.getId());
-        assertEquals("Alderaan", planet.getName());
-        assertEquals("temperate", planet.getClimate());
-        assertEquals("grasslands, mountains", planet.getTerrain());
+        assertEquals(expectedPlanet, planet);
 
-        verify(planetRepository, times(1)).findById("41D3r44N");
-        verify(starWarsServiceAgent, times(1)).getFilmApparitionsCount("Alderaan");
+        verify(planetRepository, times(1)).findById(planet.getId());
+        verify(starWarsServiceAgent, times(1)).getFilmApparitionsCount(planet.getName());
     }
 
     @Test
@@ -95,11 +88,12 @@ public class PlanetServiceImplTests {
         assertThrows(PlanetNotFoundException.class, () -> planetService.findById("41D3r44N"));
 
         verify(planetRepository, times(1)).findById("41D3r44N");
-        verify(starWarsServiceAgent, never()).getFilmApparitionsCount("Alderaan");
+        verify(starWarsServiceAgent, never()).getFilmApparitionsCount(anyString());
     }
 
     @Test
     public void findAll_whenNoNameProvided_thenReturnsPlanets() {
+        var expectedPlanets = Fixtures.getPlanetsWithFilmApparitions();
         var registeredPlanets = Fixtures.getPlanets();
 
         Page<Planet> planetsPage = new PageImpl<>(registeredPlanets);
@@ -111,29 +105,7 @@ public class PlanetServiceImplTests {
 
         var planets = planetService.findAll(0, 5, null);
 
-        var alderaan = planets.get(0);
-        var kamino = planets.get(1);
-        var kashyyyk = planets.get(2);
-
-        assertEquals("41D3r44N", alderaan.getId());
-        assertEquals("Alderaan", alderaan.getName());
-        assertEquals("temperate", alderaan.getClimate());
-        assertEquals("grasslands, mountains", alderaan.getTerrain());
-        assertEquals(2, alderaan.getFilmApparitions());
-
-        assertEquals("K4M1N0", kamino.getId());
-        assertEquals("Kamino", kamino.getName());
-        assertEquals("temperate", kamino.getClimate());
-        assertEquals("ocean", kamino.getTerrain());
-        assertEquals(1, kamino.getFilmApparitions());
-
-        assertEquals("K45HYYYK", kashyyyk.getId());
-        assertEquals("Kashyyyk", kashyyyk.getName());
-        assertEquals("tropical", kashyyyk.getClimate());
-        assertEquals("jungle, forests, lakes, rivers", kashyyyk.getTerrain());
-        assertEquals(2, kashyyyk.getFilmApparitions());
-
-        assertEquals(3, planets.size());
+        assertEquals(expectedPlanets, planets);
 
         verify(planetRepository, times(1)).findAll(any(Pageable.class));
         verify(starWarsServiceAgent, times(3)).getFilmApparitionsCount(anyString());
@@ -141,6 +113,7 @@ public class PlanetServiceImplTests {
 
     @Test
     public void findAll_whenNameProvided_thenReturnsPlanets() {
+        var expectedPlanets = Fixtures.getPlanetsWithMatchingLettersAndFilmApparitions();
         var registeredPlanets = Fixtures.getPlanetsWithMatchingLetters();
         Page<Planet> planetsPage = new PageImpl<>(registeredPlanets);
 
@@ -150,22 +123,7 @@ public class PlanetServiceImplTests {
 
         var planets = planetService.findAll(0, 5, "ka");
 
-        var kamiko = planets.get(0);
-        var kashyyyk = planets.get(1);
-
-        assertEquals("K4M1N0", kamiko.getId());
-        assertEquals("Kamino", kamiko.getName());
-        assertEquals("temperate", kamiko.getClimate());
-        assertEquals("ocean", kamiko.getTerrain());
-        assertEquals(1, kamiko.getFilmApparitions());
-
-        assertEquals("K45HYYYK", kashyyyk.getId());
-        assertEquals("Kashyyyk", kashyyyk.getName());
-        assertEquals("tropical", kashyyyk.getClimate());
-        assertEquals("jungle, forests, lakes, rivers", kashyyyk.getTerrain());
-        assertEquals(2, kashyyyk.getFilmApparitions());
-
-        assertEquals(2, planets.size());
+        assertEquals(expectedPlanets, planets);
 
         verify(planetRepository, times(1)).findAllByNameContainingIgnoreCase(any(Pageable.class), anyString());
         verify(starWarsServiceAgent, times(2)).getFilmApparitionsCount(anyString());
@@ -173,6 +131,7 @@ public class PlanetServiceImplTests {
 
     @Test
     public void deleteById_whenFindsById_thenReturnsDeletedPlanet() {
+        var expectedPlanet = Fixtures.getPlanet();
         var registeredPlanet = Fixtures.getPlanet();
 
         when(planetRepository.findById(anyString())).thenReturn(registeredPlanet);
@@ -180,10 +139,7 @@ public class PlanetServiceImplTests {
 
         var deletedPlanet = planetService.deleteById("41D3r44N");
 
-        assertEquals("41D3r44N", deletedPlanet.getId());
-        assertEquals("Alderaan", deletedPlanet.getName());
-        assertEquals("temperate", deletedPlanet.getClimate());
-        assertEquals("grasslands, mountains", deletedPlanet.getTerrain());
+        assertEquals(expectedPlanet, deletedPlanet);
 
         verify(planetRepository, times(1)).findById("41D3r44N");
         verify(planetRepository, times(1)).deleteById("41D3r44N");

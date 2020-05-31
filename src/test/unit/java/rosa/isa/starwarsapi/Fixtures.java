@@ -4,6 +4,7 @@ import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
 import rosa.isa.starwarsapi.models.Planet;
+import rosa.isa.starwarsapi.models.PlanetRegistration;
 import rosa.isa.starwarsapi.models.SwapiPlanet;
 import rosa.isa.starwarsapi.models.SwapiResponse;
 
@@ -12,63 +13,149 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Fixtures {
+    public static SwapiResponse getSwapiResponse() {
+        var swapiPlanets = getSwapiPlanets();
 
-    public static SwapiResponse getSwapiPlanets() {
-        SwapiPlanet kamino = new SwapiPlanet();
-        kamino.setName("Kamino");
-        kamino.setFilms(Arrays.asList("http://swapi.dev/api/films/5/"));
+        return SwapiResponse.builder()
+                .count(swapiPlanets.size())
+                .results(swapiPlanets)
+                .build();
+    }
 
-        SwapiPlanet kalee = new SwapiPlanet();
-        kalee.setName("Kalee");
-        kalee.setFilms(new ArrayList<>());
+    public static List<SwapiPlanet> getSwapiPlanets() {
+        SwapiPlanet kamino = SwapiPlanet.builder()
+                .name("Kamino")
+                .films(Arrays.asList("http://swapi.dev/api/films/5/"))
+                .build();
 
-        return new SwapiResponse(2, null, null, Arrays.asList(kamino, kalee));
+        SwapiPlanet kalee = SwapiPlanet.builder()
+                .name("Kalee")
+                .films(new ArrayList<>())
+                .build();
+
+        return Arrays.asList(kamino, kalee);
     }
 
     public static Planet getPlanet() {
-        var alderaan = new Planet();
-        alderaan.setName("Alderaan");
-        alderaan.setClimate("temperate");
-        alderaan.setId("41D3r44N");
-        alderaan.setTerrain("grasslands, mountains");
+        var alderaan = Planet.builder()
+                .id("41D3r44N")
+                .name("Alderaan")
+                .climate("temperate")
+                .terrain("grasslands, mountains")
+                .build();
+
+        return alderaan;
+    }
+
+    public static Planet getPlanetWithFilmApparitions() {
+        var alderaan = Planet.builder()
+                .id("41D3r44N")
+                .name("Alderaan")
+                .climate("temperate")
+                .terrain("grasslands, mountains")
+                .filmApparitions(2)
+                .build();
+
+        return alderaan;
+    }
+
+    public static PlanetRegistration getPlanetRegistration() {
+        var alderaan = PlanetRegistration.builder()
+                .name("Alderaan")
+                .climate("temperate")
+                .terrain("grasslands, mountains")
+                .build();
 
         return alderaan;
     }
 
     public static List<Planet> getPlanets() {
-        var alderaan = new Planet();
-        alderaan.setId("41D3r44N");
-        alderaan.setName("Alderaan");
-        alderaan.setClimate("temperate");
-        alderaan.setTerrain("grasslands, mountains");
+        var alderaan = Planet.builder()
+                .id("41D3r44N")
+                .name("Alderaan")
+                .climate("temperate")
+                .terrain("grasslands, mountains")
+                .build();
 
-        var kamino = new Planet();
-        kamino.setId("K4M1N0");
-        kamino.setName("Kamino");
-        kamino.setClimate("temperate");
-        kamino.setTerrain("ocean");
+        var kamino = Planet.builder()
+                .id("K4M1N0")
+                .name("Kamino")
+                .climate("temperate")
+                .terrain("ocean")
+                .build();
 
-        var kashyyyk = new Planet();
-        kashyyyk.setId("K45HYYYK");
-        kashyyyk.setName("Kashyyyk");
-        kashyyyk.setClimate("tropical");
-        kashyyyk.setTerrain("jungle, forests, lakes, rivers");
+        var kashyyyk = Planet.builder()
+                .id("K45HYYYK")
+                .name("Kashyyyk")
+                .climate("tropical")
+                .terrain("jungle, forests, lakes, rivers")
+                .build();
+
+        return Arrays.asList(alderaan, kamino, kashyyyk);
+    }
+
+    public static List<Planet> getPlanetsWithFilmApparitions() {
+        var alderaan = Planet.builder()
+                .id("41D3r44N")
+                .name("Alderaan")
+                .climate("temperate")
+                .terrain("grasslands, mountains")
+                .filmApparitions(2)
+                .build();
+
+        var kamino = Planet.builder()
+                .id("K4M1N0")
+                .name("Kamino")
+                .climate("temperate")
+                .terrain("ocean")
+                .filmApparitions(1)
+                .build();
+
+        var kashyyyk = Planet.builder()
+                .id("K45HYYYK")
+                .name("Kashyyyk")
+                .climate("tropical")
+                .terrain("jungle, forests, lakes, rivers")
+                .filmApparitions(2)
+                .build();
 
         return Arrays.asList(alderaan, kamino, kashyyyk);
     }
 
     public static List<Planet> getPlanetsWithMatchingLetters() {
-        var kamino = new Planet();
-        kamino.setId("K4M1N0");
-        kamino.setName("Kamino");
-        kamino.setClimate("temperate");
-        kamino.setTerrain("ocean");
+        var kamino = Planet.builder()
+                .id("K4M1N0")
+                .name("Kamino")
+                .climate("temperate")
+                .terrain("ocean")
+                .build();
 
-        var kashyyyk = new Planet();
-        kashyyyk.setId("K45HYYYK");
-        kashyyyk.setName("Kashyyyk");
-        kashyyyk.setClimate("tropical");
-        kashyyyk.setTerrain("jungle, forests, lakes, rivers");
+        var kashyyyk = Planet.builder()
+                .id("K45HYYYK")
+                .name("Kashyyyk")
+                .climate("tropical")
+                .terrain("jungle, forests, lakes, rivers")
+                .build();
+
+        return Arrays.asList(kamino, kashyyyk);
+    }
+
+    public static List<Planet> getPlanetsWithMatchingLettersAndFilmApparitions() {
+        var kamino = Planet.builder()
+                .id("K4M1N0")
+                .name("Kamino")
+                .climate("temperate")
+                .terrain("ocean")
+                .filmApparitions(1)
+                .build();
+
+        var kashyyyk = Planet.builder()
+                .id("K45HYYYK")
+                .name("Kashyyyk")
+                .climate("tropical")
+                .terrain("jungle, forests, lakes, rivers")
+                .filmApparitions(2)
+                .build();
 
         return Arrays.asList(kamino, kashyyyk);
     }

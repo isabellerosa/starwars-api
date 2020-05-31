@@ -26,7 +26,7 @@ public class SwapiExternalServiceImplTests {
 
     @Test
     void getApparitionsCount_whenPlanetUnregistered_thenReturnsZero() {
-        SwapiResponse swapiResponse = Fixtures.getSwapiPlanets();
+        SwapiResponse swapiResponse = Fixtures.getSwapiResponse();
 
         when(swapiService.getPlanetsByName(anyString())).thenReturn(swapiResponse);
 
@@ -39,7 +39,7 @@ public class SwapiExternalServiceImplTests {
 
     @Test
     void getApparitionsCount_whenPlanetRegistered_thenReturnsApparitionsCount() {
-        SwapiResponse swapiResponse = Fixtures.getSwapiPlanets();
+        SwapiResponse swapiResponse = Fixtures.getSwapiResponse();
 
         when(swapiService.getPlanetsByName(anyString())).thenReturn(swapiResponse);
 

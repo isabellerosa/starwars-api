@@ -12,6 +12,7 @@ import rosa.isa.starwarsapi.services.PlanetService;
 import javax.validation.Valid;
 import java.util.List;
 
+@Validated
 @Slf4j
 @RestController
 @RequestMapping("v1/planets")
@@ -43,8 +44,8 @@ public class PlanetController {
 
     @GetMapping
     public List<Planet> getPlanets(
-            @RequestParam(name = "page", defaultValue = "1") int page,
-            @RequestParam(name = "size", defaultValue = "10") int size,
+            @Min(1) @RequestParam(name = "page", defaultValue = "1") int page,
+            @Min(1) @Max(50) @RequestParam(name = "size", defaultValue = "10") int size,
             @RequestParam(name = "name", required = false) String name) {
         log.debug(String.format("Listing %d planets at page %d", size, page));
         return planetService.findAll(--page, size, name);

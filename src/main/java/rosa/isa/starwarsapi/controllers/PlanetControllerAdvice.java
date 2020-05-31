@@ -12,6 +12,7 @@ import rosa.isa.starwarsapi.exceptions.PlanetNotFoundException;
 import rosa.isa.starwarsapi.exceptions.StarWarsExternalServiceException;
 import rosa.isa.starwarsapi.models.CustomErrorResponse;
 
+import javax.validation.ConstraintViolationException;
 import java.time.LocalDateTime;
 
 @Slf4j
@@ -48,6 +49,19 @@ public class PlanetControllerAdvice {
         customErrorResponse.setMessage(errorMessage);
 
         return new ResponseEntity<CustomErrorResponse>(customErrorResponse, HttpStatus.NOT_FOUND);
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<CustomErrorResponse> planetNotFoundExceptionHandler(ConstraintViolationException constraintViolationException) {
+        log.error("Illegal argument received", constraintViolationException);
+
+        var customErrorResponse = new CustomErrorResponse();
+        customErrorResponse.setTimestamp(LocalDateTime.now());
+        customErrorResponse.setErrorCode(HttpStatus.BAD_REQUEST.value());
+        customErrorResponse.setMessage(constraintViolationException.getMessage());
+
+        return new ResponseEntity<CustomErrorResponse>(customErrorResponse, HttpStatus.BAD_REQUEST);
     }
 
     @ResponseStatus(HttpStatus.NOT_FOUND)

@@ -8,7 +8,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import rosa.isa.starwarsapi.Fixtures;
+import Fixtures;
 import rosa.isa.starwarsapi.exceptions.PlanetAlreadyExistsException;
 import rosa.isa.starwarsapi.exceptions.PlanetNotFoundException;
 import rosa.isa.starwarsapi.models.Planet;

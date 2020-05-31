@@ -6,7 +6,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import rosa.isa.starwarsapi.Fixtures;
+import Fixtures;
 import rosa.isa.starwarsapi.exceptions.StarWarsExternalServiceException;
 import rosa.isa.starwarsapi.models.SwapiResponse;
 

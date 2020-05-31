@@ -37,6 +37,15 @@ public class StarwarsApiTests {
         given().contentType(ContentType.JSON).body(planet)
                 .when().post("/planets")
                 .then().statusCode(HttpStatus.SC_CREATED);
+
+        deleteCreated(planet);
+    }
+
+    private void deleteCreated(PlanetRegistration planet) {
+        var planetId = getPlanetByName(planet.getName()).getId();
+
+        given().pathParam("id", planetId)
+                .when().delete("/planets/{id}");
     }
 
     @Test
@@ -113,7 +122,7 @@ public class StarwarsApiTests {
 
         given().pathParam("id", planet.getId())
                 .when().delete("/planets/{id}")
-                .then().statusCode(HttpStatus.SC_OK);
+                .then().statusCode(HttpStatus.SC_NO_CONTENT);
     }
 
     @Test

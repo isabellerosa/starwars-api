@@ -6,7 +6,7 @@ import javax.validation.constraints.NotBlank;
 
 @Data
 public class PlanetRegistration {
-    @NotBlank
+    @NotBlank(message = "Field name is required")
     private String name;
     private String climate;
     private String terrain;

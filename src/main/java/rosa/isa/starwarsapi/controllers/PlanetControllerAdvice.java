@@ -2,6 +2,7 @@ package rosa.isa.starwarsapi.controllers;
 
 import io.swagger.v3.oas.annotations.Hidden;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -29,7 +30,7 @@ public class PlanetControllerAdvice {
         customErrorResponse.setErrorCode(HttpStatus.CONFLICT.value());
         customErrorResponse.setMessage(planetAlreadyExistsException.getMessage());
 
-        return new ResponseEntity<CustomErrorResponse>(customErrorResponse, HttpStatus.CONFLICT);
+        return new ResponseEntity<>(customErrorResponse, HttpStatus.CONFLICT);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -39,7 +40,7 @@ public class PlanetControllerAdvice {
         var errorMessage = methodArgumentNotValidException.getBindingResult()
                 .getFieldErrors()
                 .stream()
-                .map(err -> err.getDefaultMessage())
+                .map(DefaultMessageSourceResolvable::getDefaultMessage)
                 .collect(java.util.stream.Collectors.joining("; "));
 
         var customErrorResponse = new CustomErrorResponse();
@@ -47,7 +48,7 @@ public class PlanetControllerAdvice {
         customErrorResponse.setErrorCode(HttpStatus.BAD_REQUEST.value());
         customErrorResponse.setMessage(errorMessage);
 
-        return new ResponseEntity<CustomErrorResponse>(customErrorResponse, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(customErrorResponse, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
@@ -59,7 +60,7 @@ public class PlanetControllerAdvice {
         customErrorResponse.setErrorCode(HttpStatus.BAD_REQUEST.value());
         customErrorResponse.setMessage(constraintViolationException.getMessage());
 
-        return new ResponseEntity<CustomErrorResponse>(customErrorResponse, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(customErrorResponse, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(PlanetNotFoundException.class)
@@ -71,7 +72,7 @@ public class PlanetControllerAdvice {
         customErrorResponse.setErrorCode(HttpStatus.NOT_FOUND.value());
         customErrorResponse.setMessage(planetNotFoundException.getMessage());
 
-        return new ResponseEntity<CustomErrorResponse>(customErrorResponse, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(customErrorResponse, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(StarWarsExternalServiceException.class)
@@ -83,7 +84,7 @@ public class PlanetControllerAdvice {
         customErrorResponse.setErrorCode(HttpStatus.BAD_GATEWAY.value());
         customErrorResponse.setMessage(starWarsExternalServiceException.getMessage());
 
-        return new ResponseEntity<CustomErrorResponse>(customErrorResponse, HttpStatus.BAD_GATEWAY);
+        return new ResponseEntity<>(customErrorResponse, HttpStatus.BAD_GATEWAY);
     }
 
     @ExceptionHandler(Exception.class)
@@ -95,6 +96,6 @@ public class PlanetControllerAdvice {
         customErrorResponse.setErrorCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
         customErrorResponse.setMessage(exception.getMessage());
 
-        return new ResponseEntity<CustomErrorResponse>(customErrorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(customErrorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

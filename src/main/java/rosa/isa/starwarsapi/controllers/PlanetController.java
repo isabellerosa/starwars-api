@@ -14,7 +14,7 @@ import java.util.List;
 
 @Slf4j
 @RestController
-@RequestMapping("/planets")
+@RequestMapping("v1/planets")
 public class PlanetController {
 
     private final PlanetService planetService;

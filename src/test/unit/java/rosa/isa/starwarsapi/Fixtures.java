@@ -1,5 +1,8 @@
 package unit.java.rosa.isa.starwarsapi;
 
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.info.Contact;
+import io.swagger.v3.oas.models.info.Info;
 import rosa.isa.starwarsapi.models.Planet;
 import rosa.isa.starwarsapi.models.SwapiPlanet;
 import rosa.isa.starwarsapi.models.SwapiResponse;
@@ -68,5 +71,24 @@ public class Fixtures {
         kashyyyk.setTerrain("jungle, forests, lakes, rivers");
 
         return Arrays.asList(kamino, kashyyyk);
+    }
+
+    public static OpenAPI getOpenAPISwaggerConfig() {
+        return new OpenAPI()
+                .info(buildSwaggerInfo());
+    }
+
+    private static Info buildSwaggerInfo() {
+        return new Info()
+                .title("title")
+                .description("description")
+                .version("v1.0")
+                .contact(buildSwaggerContactInfo());
+    }
+
+    private static Contact buildSwaggerContactInfo() {
+        return new Contact()
+                .name("name")
+                .url("https://test.com");
     }
 }

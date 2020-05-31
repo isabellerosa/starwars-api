@@ -1,4 +1,4 @@
-package rosa.isa.starwarsapi;
+package e2e.java.rosa.isa.starwarsapi;
 
 import com.github.javafaker.Faker;
 import com.google.common.reflect.TypeToken;
@@ -29,10 +29,11 @@ public class StarwarsApiTests {
     @Test
     void addPlanet_whenCorrectPayload_thenCreated() {
         var faker = new Faker();
-        var newPlanetName = faker.space().planet();
 
         var planet = new PlanetRegistration();
-        planet.setName(newPlanetName);
+        planet.setName(faker.space().planet());
+        planet.setClimate(faker.weather().description());
+        planet.setTerrain(faker.random().hex());
 
         given().contentType(ContentType.JSON).body(planet)
                 .when().post("/planets")
@@ -50,12 +51,18 @@ public class StarwarsApiTests {
 
     @Test
     void addPlanet_whenCorrectlyFilled_thenConflict() {
+        var originalPlanet = savePlanet();
+
         var planet = new PlanetRegistration();
-        planet.setName("Tatooine");
+        planet.setName(originalPlanet.getName());
+        planet.setClimate(originalPlanet.getClimate());
+        planet.setTerrain(originalPlanet.getTerrain());
 
         given().contentType(ContentType.JSON).body(planet)
                 .when().post("/planets")
                 .then().statusCode(HttpStatus.SC_CONFLICT);
+
+        deleteCreated(planet);
     }
 
     @Test
@@ -141,6 +148,7 @@ public class StarwarsApiTests {
         var planet = new Planet();
         planet.setName(faker.space().planet());
         planet.setClimate(faker.weather().description());
+        planet.setTerrain(faker.random().hex());
 
         given().contentType(ContentType.JSON).body(planet).post("/planets");
 

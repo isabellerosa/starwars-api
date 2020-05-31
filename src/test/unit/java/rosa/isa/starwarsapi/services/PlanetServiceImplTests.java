@@ -1,4 +1,4 @@
-package rosa.isa.starwarsapi.services;
+package unit.java.rosa.isa.starwarsapi.services;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -8,12 +8,13 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import Fixtures;
 import rosa.isa.starwarsapi.exceptions.PlanetAlreadyExistsException;
 import rosa.isa.starwarsapi.exceptions.PlanetNotFoundException;
 import rosa.isa.starwarsapi.models.Planet;
 import rosa.isa.starwarsapi.repositories.PlanetRepository;
+import rosa.isa.starwarsapi.services.PlanetServiceImpl;
 import rosa.isa.starwarsapi.services.thirdparty.StarWarsExternalService;
+import unit.java.rosa.isa.starwarsapi.Fixtures;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;

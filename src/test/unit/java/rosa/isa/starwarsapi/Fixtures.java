@@ -1,3 +1,5 @@
+package unit.java.rosa.isa.starwarsapi;
+
 import rosa.isa.starwarsapi.models.Planet;
 import rosa.isa.starwarsapi.models.SwapiPlanet;
 import rosa.isa.starwarsapi.models.SwapiResponse;

@@ -1,4 +1,4 @@
-package rosa.isa.starwarsapi.services.thirdparty;
+package unit.java.rosa.isa.starwarsapi.services.thirdparty;
 
 import feign.RetryableException;
 import org.junit.jupiter.api.Test;
@@ -6,9 +6,11 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import Fixtures;
 import rosa.isa.starwarsapi.exceptions.StarWarsExternalServiceException;
 import rosa.isa.starwarsapi.models.SwapiResponse;
+import rosa.isa.starwarsapi.services.thirdparty.SwapiExternalServiceImpl;
+import rosa.isa.starwarsapi.services.thirdparty.SwapiService;
+import unit.java.rosa.isa.starwarsapi.Fixtures;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;

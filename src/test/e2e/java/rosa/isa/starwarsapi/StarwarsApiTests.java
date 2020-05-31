@@ -10,8 +10,12 @@ import org.junit.jupiter.api.Test;
 import rosa.isa.starwarsapi.models.Planet;
 import rosa.isa.starwarsapi.models.PlanetRegistration;
 
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.List;
+import java.util.Properties;
 
 import static io.restassured.RestAssured.given;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -21,9 +25,21 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class StarwarsApiTests {
 
     @BeforeAll
-    public static void setup() {
-        RestAssured.basePath = "/api/v1";
-        RestAssured.port = 8080;
+    public static void setup() throws IOException {
+        Properties properties = getProperties();
+
+        RestAssured.baseURI = properties.getProperty("endpoint.base-uri");
+        RestAssured.basePath = properties.getProperty("endpoint.base-path");
+        RestAssured.port = Integer.parseInt(properties.getProperty("endpoint.port"));
+    }
+
+    private static Properties getProperties() throws IOException {
+        var propertiesFile = new File("src/test/resources/e2e.properties");
+
+        var properties = new Properties();
+        properties.load(new FileReader(propertiesFile));
+
+        return properties;
     }
 
     @Test
@@ -36,7 +52,7 @@ public class StarwarsApiTests {
         planet.setTerrain(faker.random().hex());
 
         given().contentType(ContentType.JSON).body(planet)
-                .when().post("/planets")
+                .when().post("/v1/planets")
                 .then().statusCode(HttpStatus.SC_CREATED);
 
         deleteCreated(planet);
@@ -46,7 +62,7 @@ public class StarwarsApiTests {
         var planetId = getPlanetByName(planet.getName()).getId();
 
         given().pathParam("id", planetId)
-                .when().delete("/planets/{id}");
+                .when().delete("/v1/planets/{id}");
     }
 
     @Test
@@ -59,7 +75,7 @@ public class StarwarsApiTests {
         planet.setTerrain(originalPlanet.getTerrain());
 
         given().contentType(ContentType.JSON).body(planet)
-                .when().post("/planets")
+                .when().post("/v1/planets")
                 .then().statusCode(HttpStatus.SC_CONFLICT);
 
         deleteCreated(planet);
@@ -70,7 +86,7 @@ public class StarwarsApiTests {
         var planet = new PlanetRegistration();
 
         given().contentType(ContentType.JSON).body(planet)
-                .when().post("/planets")
+                .when().post("/v1/planets")
                 .then().statusCode(HttpStatus.SC_BAD_REQUEST);
     }
 
@@ -79,7 +95,7 @@ public class StarwarsApiTests {
         var planet = getPlanetByName("Alderaan");
 
         var response = given().pathParam("id", planet.getId())
-                .when().get("/planets/{id}");
+                .when().get("/v1/planets/{id}");
 
         assertEquals(HttpStatus.SC_OK, response.statusCode());
         assertEquals(planet, response.as(Planet.class));
@@ -87,7 +103,7 @@ public class StarwarsApiTests {
 
     private Planet getPlanetByName(String planetName) {
         List<Planet> planets = given().queryParam("name", planetName)
-                .when().get("/planets")
+                .when().get("/v1/planets")
                 .as(getPlanetListType());
 
         return planets.stream().filter(
@@ -106,7 +122,7 @@ public class StarwarsApiTests {
         var planetId = faker.random().hex();
 
         given().pathParam("id", planetId)
-                .when().get("/planets/{id}")
+                .when().get("/v1/planets/{id}")
                 .then().statusCode(HttpStatus.SC_NOT_FOUND);
     }
 
@@ -115,7 +131,7 @@ public class StarwarsApiTests {
         var size = 3;
 
         var response = given().queryParam("size", size)
-                .when().get("/planets");
+                .when().get("/v1/planets");
 
         List<Planet> planets = response.as(getPlanetListType());
 
@@ -128,7 +144,7 @@ public class StarwarsApiTests {
         var planet = savePlanet();
 
         given().pathParam("id", planet.getId())
-                .when().delete("/planets/{id}")
+                .when().delete("/v1/planets/{id}")
                 .then().statusCode(HttpStatus.SC_NO_CONTENT);
     }
 
@@ -138,7 +154,7 @@ public class StarwarsApiTests {
         var planetId = faker.random().hex();
 
         given().pathParam("id", planetId)
-                .when().delete("/planets/{id}")
+                .when().delete("/v1/planets/{id}")
                 .then().statusCode(HttpStatus.SC_NOT_FOUND);
     }
 
@@ -150,7 +166,7 @@ public class StarwarsApiTests {
         planet.setClimate(faker.weather().description());
         planet.setTerrain(faker.random().hex());
 
-        given().contentType(ContentType.JSON).body(planet).post("/planets");
+        given().contentType(ContentType.JSON).body(planet).post("/v1/planets");
 
         return getPlanetByName(planet.getName());
     }

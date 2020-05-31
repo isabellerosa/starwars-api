@@ -7,7 +7,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import rosa.isa.starwarsapi.exceptions.PlanetAlreadyExistsException;
 import rosa.isa.starwarsapi.exceptions.PlanetNotFoundException;
 import rosa.isa.starwarsapi.exceptions.StarWarsExternalServiceException;
@@ -21,7 +20,6 @@ import java.time.LocalDateTime;
 @ControllerAdvice
 public class PlanetControllerAdvice {
 
-    @ResponseStatus(HttpStatus.CONFLICT)
     @ExceptionHandler(PlanetAlreadyExistsException.class)
     public ResponseEntity<CustomErrorResponse> planetAlreadyExistsExceptionHandler(PlanetAlreadyExistsException planetAlreadyExistsException) {
         log.error("Planet already exists", planetAlreadyExistsException);
@@ -31,10 +29,9 @@ public class PlanetControllerAdvice {
         customErrorResponse.setErrorCode(HttpStatus.CONFLICT.value());
         customErrorResponse.setMessage(planetAlreadyExistsException.getMessage());
 
-        return new ResponseEntity<CustomErrorResponse>(customErrorResponse, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<CustomErrorResponse>(customErrorResponse, HttpStatus.CONFLICT);
     }
 
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<CustomErrorResponse> methodArgumentNotValidExceptionHandler(MethodArgumentNotValidException methodArgumentNotValidException) {
         log.error("Planet is invalid", methodArgumentNotValidException);
@@ -50,12 +47,11 @@ public class PlanetControllerAdvice {
         customErrorResponse.setErrorCode(HttpStatus.BAD_REQUEST.value());
         customErrorResponse.setMessage(errorMessage);
 
-        return new ResponseEntity<CustomErrorResponse>(customErrorResponse, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<CustomErrorResponse>(customErrorResponse, HttpStatus.BAD_REQUEST);
     }
 
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(ConstraintViolationException.class)
-    public ResponseEntity<CustomErrorResponse> planetNotFoundExceptionHandler(ConstraintViolationException constraintViolationException) {
+    public ResponseEntity<CustomErrorResponse> constraintViolationExceptionHandler(ConstraintViolationException constraintViolationException) {
         log.error("Illegal argument received", constraintViolationException);
 
         var customErrorResponse = new CustomErrorResponse();
@@ -66,7 +62,6 @@ public class PlanetControllerAdvice {
         return new ResponseEntity<CustomErrorResponse>(customErrorResponse, HttpStatus.BAD_REQUEST);
     }
 
-    @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(PlanetNotFoundException.class)
     public ResponseEntity<CustomErrorResponse> planetNotFoundExceptionHandler(PlanetNotFoundException planetNotFoundException) {
         log.error("Planet not found", planetNotFoundException);
@@ -79,7 +74,6 @@ public class PlanetControllerAdvice {
         return new ResponseEntity<CustomErrorResponse>(customErrorResponse, HttpStatus.NOT_FOUND);
     }
 
-    @ResponseStatus(HttpStatus.BAD_GATEWAY)
     @ExceptionHandler(StarWarsExternalServiceException.class)
     public ResponseEntity<CustomErrorResponse> starWarsExternalServiceExceptionHandler(StarWarsExternalServiceException starWarsExternalServiceException) {
         log.error("An error occurred in Star Wars external service", starWarsExternalServiceException);
@@ -89,10 +83,9 @@ public class PlanetControllerAdvice {
         customErrorResponse.setErrorCode(HttpStatus.BAD_GATEWAY.value());
         customErrorResponse.setMessage(starWarsExternalServiceException.getMessage());
 
-        return new ResponseEntity<CustomErrorResponse>(customErrorResponse, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<CustomErrorResponse>(customErrorResponse, HttpStatus.BAD_GATEWAY);
     }
 
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(Exception.class)
     public ResponseEntity<CustomErrorResponse> generalExceptionHandler(Exception exception) {
         log.error("An unknown error occurred", exception);
@@ -102,6 +95,6 @@ public class PlanetControllerAdvice {
         customErrorResponse.setErrorCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
         customErrorResponse.setMessage(exception.getMessage());
 
-        return new ResponseEntity<CustomErrorResponse>(customErrorResponse, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<CustomErrorResponse>(customErrorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

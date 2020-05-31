@@ -24,7 +24,9 @@ stop:
 	docker container stop $(shell docker container ls -q --filter name=starwars-api_starwars)
 
 clean:
-	docker container rm $(shell docker container ls -a -q --filter name=starwars-api_starwars)
+	docker container rm $(shell docker container ls -a -q --filter name=starwars-api_starwars) \
+		&& docker volume remove starwars-api_starwars-vol \
+		&& docker network remove starwars-api_starwars-network
 
 stop-clean: stop clean
 

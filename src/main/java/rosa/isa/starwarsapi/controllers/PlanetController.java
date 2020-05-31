@@ -36,7 +36,7 @@ public class PlanetController {
     @PostMapping
     @ResponseStatus(code = HttpStatus.CREATED)
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Planet successfully created", content = @Content),
+            @ApiResponse(responseCode = "201", description = "Planet successfully created", content = @Content),
             @ApiResponse(responseCode = "400", description = "Planet is invalid", content = @Content),
             @ApiResponse(responseCode = "409", description = "Planet is already registered", content = @Content),
             @ApiResponse(responseCode = "500", description = "An unknown error occurred", content = @Content),

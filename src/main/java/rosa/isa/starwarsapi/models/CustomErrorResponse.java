@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 
 @Data
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
@@ -14,4 +15,10 @@ public class CustomErrorResponse {
     private LocalDateTime timestamp;
     private Integer errorCode;
     private String message;
+
+    public CustomErrorResponse(Integer errorCode, String message) {
+        this.timestamp = LocalDateTime.now(ZoneOffset.UTC);
+        this.errorCode = errorCode;
+        this.message = message;
+    }
 }

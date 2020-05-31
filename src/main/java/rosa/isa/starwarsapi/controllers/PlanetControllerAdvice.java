@@ -1,5 +1,6 @@
 package rosa.isa.starwarsapi.controllers;
 
+import io.swagger.v3.oas.annotations.Hidden;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,7 @@ import rosa.isa.starwarsapi.models.CustomErrorResponse;
 import javax.validation.ConstraintViolationException;
 import java.time.LocalDateTime;
 
+@Hidden
 @Slf4j
 @ControllerAdvice
 public class PlanetControllerAdvice {

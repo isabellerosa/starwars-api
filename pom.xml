@@ -17,6 +17,7 @@
 	<properties>
 		<java.version>11</java.version>
 		<spring-cloud.version>Hoxton.SR4</spring-cloud.version>
+		<springdoc-openapi.version>1.4.0</springdoc-openapi.version>
 	</properties>
 
 	<dependencies>
@@ -78,6 +79,12 @@
 			<groupId>com.github.javafaker</groupId>
 			<artifactId>javafaker</artifactId>
 			<version>1.0.2</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-ui</artifactId>
+			<version>${springdoc-openapi.version}</version>
 		</dependency>
 
 	</dependencies>

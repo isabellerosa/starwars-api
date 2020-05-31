@@ -13,6 +13,9 @@ help:
 	@echo "    > clean - Remove stopped containers"
 	@echo "    > stop-clean - Stop and then remove containers"
 	@echo "    > rmi - Remove image"
+	@echo "    > test - Run all tests"
+	@echo "    > unit - Run unit tests"
+	@echo "    > e2e - Run end-to-end tests"
 
 image:
 	docker image build -t isabellerosa/starwars-api .
@@ -32,3 +35,12 @@ stop-clean: stop clean
 
 rmi:
 	docker image rm $(shell docker image ls -q --filter reference="isabellerosa/starwars-api")
+
+test:
+	docker run -it isabellerosa/starwars-api ./mvnw test
+
+unit:
+	docker run -it isabellerosa/starwars-api ./mvnw -Dtest=unit/**/*Tests test
+
+e2e:
+	docker run -it isabellerosa/starwars-api ./mvnw -Dtest=e2e/**/*Tests test

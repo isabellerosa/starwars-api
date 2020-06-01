@@ -30,23 +30,27 @@
     ```bash
     make up
     ```
-
+    > Atenção: A porta padrão é `8080`. [Instruções para alterar](#alterando-configurações)
 1. Acesse os endpoints através do Swagger em [/api/docs](localhost:8080/api/docs)
 
 1. Quando terminar, pare e remova o container
 
     ```bash
-    make clean-stop
+    make stop-clean
     ```
 
 ## Rodando os testes
 
-- `make tests` roda todos os testes
+- `make test`(Linux) ou `make win-test`(Windows) para rodar todos os testes
 
-- `make unit` roda apenas os testes de unidade
+- `make unit`(Linux) ou `make win-unit`(Windows) para rodar apenas os testes de unidade
 
-- `make e2e` roda apenas os testes end-to-end
+- `make e2e`(Linux) ou `make win-test`(Windows) para rodar apenas os testes end-to-end
     > Nota: Verifique as configurações do endpoint em `src/tests/resources/e2e.properties` e adapte conforme necessário
+
+## Alterando configurações
+As configurações podem ser alteradas no arquivo `.env`, localizado na raiz do projeto. 
+Caso tenha alterado configurações da API e queira rodar os testes end-to-end, altere as configurações em `src/test/resources/e2e.properties`
 
 ## Observações
 

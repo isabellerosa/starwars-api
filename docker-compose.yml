@@ -5,7 +5,7 @@ services:
       - starwars-mongo-db
     image: isabellerosa/starwars-api
     ports:
-      - 8000:8080
+      - 8080:8080
     env_file:
       - .env
     networks:
@@ -20,7 +20,7 @@ services:
     environment:
       - MONGO_INITDB_DATABASE=starwars
     volumes:
-      - starwars-vol:/etc/mongo
+      - starwars-vol
     networks:
       - starwars-network
 

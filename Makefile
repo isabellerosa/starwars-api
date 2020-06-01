@@ -41,19 +41,10 @@ rmi:
 	docker image rm $(shell docker image ls -q --filter reference="isabellerosa/starwars-api")
 
 test:
-	./mvnw test
+	docker exec $(shell docker container ls -q --filter ancestor=isabellerosa/starwars-api) ./mvnw test
 
 unit:
-	./mvnw -Dtest=unit/**/*Tests test
+	docker exec $(shell docker container ls -q --filter ancestor=isabellerosa/starwars-api) ./mvnw -Dtest=unit/**/*Tests test
 
 e2e:
-	./mvnw -Dtest=e2e/**/*Tests test
-
-win-test:
-	mvnw.cmd test
-
-win-unit:
-	mvnw.cmd -Dtest=unit/**/*Tests test
-
-win-e2e:
-	mvnw.cmd -Dtest=e2e/**/*Tests test
+	docker exec $(shell docker container ls -q --filter ancestor=isabellerosa/starwars-api) ./mvnw -Dtest=e2e/**/*Tests test

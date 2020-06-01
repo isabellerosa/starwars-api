@@ -37,10 +37,10 @@ rmi:
 	docker image rm $(shell docker image ls -q --filter reference="isabellerosa/starwars-api")
 
 test:
-	docker run -it isabellerosa/starwars-api ./mvnw test
+	./mvnw test
 
 unit:
-	docker run -it isabellerosa/starwars-api ./mvnw -Dtest=unit/**/*Tests test
+	./mvnw -Dtest=unit/**/*Tests test
 
 e2e:
-	docker run -it isabellerosa/starwars-api ./mvnw -Dtest=e2e/**/*Tests test
+	./mvnw -Dtest=e2e/**/*Tests test

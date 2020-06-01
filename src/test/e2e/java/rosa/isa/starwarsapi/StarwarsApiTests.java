@@ -54,11 +54,11 @@ public class StarwarsApiTests {
                 .when().post("/v1/planets")
                 .then().statusCode(HttpStatus.SC_CREATED);
 
-        deleteCreated(planet);
+        deleteCreated(planet.getName());
     }
 
-    private void deleteCreated(PlanetRegistration planet) {
-        var planetId = getPlanetByName(planet.getName()).getId();
+    private void deleteCreated(String name) {
+        var planetId = getPlanetByName(name).getId();
 
         given().pathParam("id", planetId)
                 .when().delete("/v1/planets/{id}");
@@ -76,8 +76,6 @@ public class StarwarsApiTests {
         given().contentType(ContentType.JSON).body(planet)
                 .when().post("/v1/planets")
                 .then().statusCode(HttpStatus.SC_CONFLICT);
-
-        deleteCreated(planet);
     }
 
     @Test
@@ -91,6 +89,8 @@ public class StarwarsApiTests {
 
     @Test
     void getPlanet_whenPlanetExists_thenOk() {
+        savePlanet("Alderaan");
+
         var planet = getPlanetByName("Alderaan");
 
         var response = given().pathParam("id", planet.getId())
@@ -98,6 +98,8 @@ public class StarwarsApiTests {
 
         assertEquals(HttpStatus.SC_OK, response.statusCode());
         assertEquals(planet, response.as(Planet.class));
+
+        deleteCreated("Alderaan");
     }
 
     private Planet getPlanetByName(String planetName) {
@@ -139,7 +141,7 @@ public class StarwarsApiTests {
     }
 
     @Test
-    void deletePlanet_whenPlanetExists_thenOk() {
+    void deletePlanet_whenPlanetExists_thenNoContent() {
         var planet = savePlanet();
 
         given().pathParam("id", planet.getId())
@@ -162,6 +164,19 @@ public class StarwarsApiTests {
 
         var planet = new Planet();
         planet.setName(faker.space().planet());
+        planet.setClimate(faker.weather().description());
+        planet.setTerrain(faker.random().hex());
+
+        given().contentType(ContentType.JSON).body(planet).post("/v1/planets");
+
+        return getPlanetByName(planet.getName());
+    }
+
+    private Planet savePlanet(String name) {
+        var faker = new Faker();
+
+        var planet = new Planet();
+        planet.setName(name);
         planet.setClimate(faker.weather().description());
         planet.setTerrain(faker.random().hex());
 

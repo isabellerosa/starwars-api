@@ -1,3 +1,5 @@
+![Java CI with Maven](https://github.com/isabellerosa/starwars-api/workflows/Java%20CI%20with%20Maven/badge.svg?branch=master&event=push)
+
 # Desafio Star Wars API
 
 ## Detalhes

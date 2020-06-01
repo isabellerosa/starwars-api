@@ -1,4 +1,4 @@
-![Java CI with Maven](https://github.com/isabellerosa/starwars-api/workflows/Java%20CI%20with%20Maven/badge.svg?branch=master&event=push)
+![Tests](https://github.com/isabellerosa/starwars-api/workflows/Tests/badge.svg)
 
 # Desafio Star Wars API
 
@@ -15,7 +15,7 @@
 
 [ :heavy_check_mark: ] Cada planeta deve ter a quantidade de aparições em filmes, obtidas pela API pública do Star Wars
 
-## Rodando os testes
+## Como rodar
 
 > É necessario que você tenha o Docker instalado para seguir os passos abaixo.
 
@@ -41,11 +41,11 @@
 
 ## Rodando os testes
 
-- `make test`(Linux) ou `make win-test`(Windows) para rodar todos os testes
+- `make test` para rodar todos os testes
 
-- `make unit`(Linux) ou `make win-unit`(Windows) para rodar apenas os testes de unidade
+- `make unit` para rodar apenas os testes de unidade
 
-- `make e2e`(Linux) ou `make win-test`(Windows) para rodar apenas os testes end-to-end
+- `make e2e` para rodar apenas os testes end-to-end
     > Nota: Verifique as configurações do endpoint em `src/tests/resources/e2e.properties` e adapte conforme necessário
 
 ## Alterando configurações

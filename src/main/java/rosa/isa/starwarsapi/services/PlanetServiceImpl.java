@@ -1,6 +1,8 @@
 package rosa.isa.starwarsapi.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -36,6 +38,7 @@ public class PlanetServiceImpl implements PlanetService {
         return planetRepository.save(planet);
     }
 
+    @Cacheable(value = "planet", key = "#id")
     @Override
     public Planet findById(String id) {
         var planet = planetRepository.findById(id);
@@ -69,6 +72,7 @@ public class PlanetServiceImpl implements PlanetService {
         return planet;
     }
 
+    @CacheEvict(value = "planet", key = "#id")
     @Override
     public Planet deleteById(String id) {
         if (Objects.isNull(planetRepository.findById(id)))

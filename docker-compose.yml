@@ -3,6 +3,7 @@ services:
   starwars-api:
     depends_on:
       - starwars-mongo-db
+      - starwars-redis-db
     image: isabellerosa/starwars-api
     ports:
       - 8080:8080
@@ -19,6 +20,15 @@ services:
       - 27017:27017
     environment:
       - MONGO_INITDB_DATABASE=starwars
+    volumes:
+      - starwars-vol
+    networks:
+      - starwars-network
+
+  starwars-redis-db:
+    image: redis:latest
+    ports:
+      - 6379:6379
     volumes:
       - starwars-vol
     networks:

@@ -1,4 +1,4 @@
-.PHONY: image up stop clean stop-clean rmi help test unit e2e win-test win-unit win-e2e
+.PHONY: help image up stop clean stop-clean rmi test unit e2e
 
 default: help
 
@@ -13,13 +13,9 @@ help:
 	@echo "    > clean - Remove stopped containers"
 	@echo "    > stop-clean - Stop and then remove containers"
 	@echo "    > rmi - Remove image"
-	@echo "         -------   OUTSIDE DOCKER CONTAINER  -------"
 	@echo "    > test - Run all tests"
 	@echo "    > unit - Run unit tests"
 	@echo "    > e2e - Run end-to-end tests"
-	@echo "    > win-test - Run all tests on Windows"
-	@echo "    > win-unit - Run unit tests on Windows"
-	@echo "    > win-e2e - Run end-to-end tests on Windows"
 
 image:
 	docker image build -t isabellerosa/starwars-api .
@@ -28,10 +24,18 @@ up:
 	docker-compose up -d
 
 stop:
-	docker container stop $(shell docker container ls -q --filter name=starwars-api --filter name=starwars-mongo-db)
+	docker container stop \
+		$(shell docker container ls -q \
+			--filter name=starwars-api \
+			--filter name=starwars-mongo-db \
+			--filter name=starwars-redis-db)
 
 clean:
-	docker container rm $(shell docker container ls -a -q --filter name=starwars-api --filter name=starwars-mongo-db) \
+	docker container rm \
+		$(shell docker container ls -a -q \
+			--filter name=starwars-api \
+			--filter name=starwars-mongo-db \
+			--filter name=starwars-redis-db) \
 		&& docker volume remove $(shell docker volume ls -q --filter name=starwars-vol) \
 		&& docker network remove $(shell docker network ls -q --filter name=starwars-network)
 
